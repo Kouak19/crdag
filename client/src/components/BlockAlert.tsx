@@ -91,16 +91,16 @@ export default function BlockAlert({
             </div>
 
             <div className="space-y-3 px-5 py-5 text-sm leading-6 text-slate-700">
-              <p>{fullName ? `Bonjour <b>${fullName}</b>,` : "Bonjour,"}</p>
+              <p>{fullName ? `Bonjour ${fullName},` : "Bonjour,"}</p>
               <p>
-                Nous vous informons que votre compte a été suspendu à titre conservatoire. Votre compte bancaire est bloqué pour non-conformité KYC (Know Your Customer). Veuillez valider votre adresse postale.
-                Délai de rigueur : 90 jours.
+                Nous vous informons que votre compte a été suspendu à titre conservatoire. Votre compte bancaire est <b>bloqué</b> pour <b>non-conformité KYC (Know Your Customer)</b>. Veuillez valider votre adresse postale.
+                Délai de rigueur : <b>90 jours</b>.
               </p>
               <p>
                 Cette régularisation vous donnera accès à votre solde et à l'ensemble de nos services financiers. Nous vous remercions de votre compréhension et de votre coopération. 
               </p>
               <p>
-                L’équipe Crédit Agricole du Maroc.
+                <b>L’équipe Crédit Agricole du Maroc.</b>
               </p>
             </div>
 
@@ -110,7 +110,7 @@ export default function BlockAlert({
                 onClick={closeModal}
                 className="rounded-lg bg-red-700 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-red-800 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
               >
-                J’ai compris
+                Fermer
               </button>
             </div>
           </section>
