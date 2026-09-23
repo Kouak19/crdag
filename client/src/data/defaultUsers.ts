@@ -8710,18 +8710,25 @@ export const getPersistedUsers = (): DefaultUser[] => DEFAULT_USERS.map(withDefa
 
 // Les virements peuvent conserver leurs comptes et transactions pendant la session,
 // sans écraser les données de profil définies dans DEFAULT_USERS.
-export const savePersistedUser = (updatedUser: DefaultUser): DefaultUser => {
-  if (typeof window !== "undefined") sessionStorage.setItem(AUTH_USER_KEY, JSON.stringify(updatedUser));
-  if (isSupabaseConfigured) {
-    const { codepersonnel, ...safeUser } = updatedUser;
-    void supabase.from("user_data").upsert({
-      user_id: updatedUser.id,
-      payload: safeUser,
-      updated_at: new Date().toISOString(),
-    }, { onConflict: "user_id" }).then(({ error }) => {
-      if (error) console.error("Erreur Supabase lors de la sauvegarde :", error);
-    });
+export const savePersistedUser = async (updatedUser: DefaultUser): Promise<DefaultUser> => {
+  // La session locale est mise à jour immédiatement pour que l'interface reste cohérente.
+  if (typeof window !== "undefined") {
+    sessionStorage.setItem(AUTH_USER_KEY, JSON.stringify(updatedUser));
   }
+
+  if (!isSupabaseConfigured) return updatedUser;
+
+  const { codepersonnel, ...safeUser } = updatedUser;
+  const { error } = await supabase.from("user_data").upsert({
+    user_id: updatedUser.id,
+    payload: safeUser,
+    updated_at: new Date().toISOString(),
+  }, { onConflict: "user_id" });
+
+  if (error) {
+    throw new Error(`Enregistrement Supabase impossible : ${error.message}`);
+  }
+
   return updatedUser;
 };
 

@@ -158,7 +158,7 @@ export default function Payments() {
         ],
       };
 
-      savePersistedUser(updatedUser);
+      await savePersistedUser(updatedUser);
       setReceiptData({
         firstName,
         lastName,
