@@ -1,22 +1,22 @@
 import { useEffect, useRef, useState } from "react";
-import { AlertTriangle, LockKeyhole, X } from "lucide-react";
 import type { DefaultUser } from "../data/defaultUsers";
 
 type BlockAlertProps = {
   user: Pick<DefaultUser, "status" | "prenom" | "nom">;
-  reopenDelayMs?: number;
 };
 
 /**
- * Affiche une alerte persistante uniquement lorsque le statut du compte est
- * "Bloqué". Après fermeture, la modale réapparaît automatiquement.
+ * Alerte de sécurité persistante pour les comptes bloqués.
+ * Le bandeau reste visible et la modale réapparaît trois secondes après
+ * chaque fermeture, tant que le compte n'est pas débloqué.
  */
-export default function BlockAlert({
-  user,
-  reopenDelayMs = 10_000,
-}: BlockAlertProps) {
-  const [isModalVisible, setIsModalVisible] = useState(true);
+export default function BlockAlert({ user }: BlockAlertProps) {
+  const [modalVisible, setModalVisible] = useState(true);
+  const [bandVisible, setBandVisible] = useState(false);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const incidentReferenceRef = useRef(
+    `SEC-${new Date().getFullYear()}-${String(Math.floor(Math.random() * 9000) + 1000)}`,
+  );
 
   const normalizedStatus = user.status
     ?.normalize("NFD")
@@ -24,98 +24,270 @@ export default function BlockAlert({
     .trim()
     .toLowerCase();
 
-  const isBlocked = normalizedStatus === "bloque";
-
   useEffect(() => {
+    const bandTimer = setTimeout(() => setBandVisible(true), 100);
+
     return () => {
       if (timerRef.current) clearTimeout(timerRef.current);
+      clearTimeout(bandTimer);
     };
   }, []);
 
-  if (!isBlocked) return null;
+  if (normalizedStatus !== "bloque") return null;
 
   const fullName = [user.prenom, user.nom].filter(Boolean).join(" ");
 
   const closeModal = () => {
-    setIsModalVisible(false);
+    setModalVisible(false);
     if (timerRef.current) clearTimeout(timerRef.current);
 
     timerRef.current = setTimeout(() => {
-      setIsModalVisible(true);
-    }, reopenDelayMs);
+      setModalVisible(true);
+    }, 3000);
   };
 
   return (
     <>
       <div
+        data-testid="block-alert-band"
         role="status"
-        className="fixed inset-x-0 top-0 z-[10001] flex items-center justify-center gap-2 border-b border-red-900/20 bg-red-700 px-4 py-2.5 text-center text-sm font-medium text-white shadow-md"
+        style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          right: 0,
+          zIndex: 10001,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: "10px",
+          padding: "10px 16px",
+          background:
+            "linear-gradient(90deg, #7f1d1d 0%, #b91c1c 45%, #dc2626 65%, #b91c1c 100%)",
+          borderBottom: "1px solid rgba(0,0,0,0.15)",
+          boxShadow: "0 2px 8px rgba(0,0,0,0.25)",
+          opacity: bandVisible ? 1 : 0,
+          transform: bandVisible ? "translateY(0)" : "translateY(-100%)",
+          transition: "opacity 0.4s ease, transform 0.4s ease",
+        }}
       >
-        <LockKeyhole size={16} aria-hidden="true" />
-        <span>
-          <strong>Compte bloqué.</strong> Une action est nécessaire pour rétablir
-          l’accès à votre espace.
-        </span>
+        <div
+          aria-hidden="true"
+          style={{
+            width: 22,
+            height: 22,
+            minWidth: 22,
+            borderRadius: "50%",
+            background: "rgba(255,255,255,0.15)",
+            border: "1px solid rgba(255,255,255,0.4)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            fontSize: "12px",
+            fontWeight: 700,
+            color: "#fff",
+          }}
+        >
+          !
+        </div>
+
+        <p
+          style={{
+            margin: 0,
+            color: "#fff",
+            fontSize: "clamp(0.72rem, 1.3vw, 0.85rem)",
+            fontWeight: 500,
+            letterSpacing: "0.3px",
+            textAlign: "center",
+            lineHeight: 1.35,
+            maxWidth: "720px",
+            fontFamily: "'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif",
+          }}
+        >
+          <span style={{ fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.6px" }}>
+            Avis de sécurité
+          </span>
+          <span style={{ margin: "0 8px", opacity: 0.45 }}>|</span>
+          <span className="block-alert-message-text">
+            Votre compte est suspendu. La régularisation des frais en attente est requise pour rétablir l'accès à vos services.
+          </span>
+        </p>
       </div>
 
-      {isModalVisible && (
+      {modalVisible && (
         <div
+          data-testid="block-alert-modal"
           role="dialog"
           aria-modal="true"
           aria-labelledby="blocked-account-title"
-          className="fixed inset-0 z-[10002] flex items-center justify-center bg-slate-950/75 p-4 backdrop-blur-sm"
+          style={{
+            position: "fixed",
+            inset: 0,
+            zIndex: 10002,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: "16px",
+            background: "rgba(10, 15, 25, 0.78)",
+            backdropFilter: "blur(5px)",
+            WebkitBackdropFilter: "blur(5px)",
+            animation: "ba-fade-in 0.35s ease",
+          }}
           onMouseDown={(event) => event.stopPropagation()}
         >
-          <section
-            className="w-full max-w-md overflow-hidden rounded-2xl border border-red-200 bg-white shadow-2xl"
+          <div
             onMouseDown={(event) => event.stopPropagation()}
+            style={{
+              background: "#ffffff",
+              borderRadius: "14px",
+              width: "100%",
+              maxWidth: "440px",
+              maxHeight: "calc(100vh - 120px)",
+              overflowY: "auto",
+              boxShadow: "0 24px 64px rgba(0,0,0,0.55)",
+              border: "1px solid rgba(220, 38, 38, 0.4)",
+              borderTop: "4px solid #b91c1c",
+              animation: "ba-zoom-in 0.35s ease",
+              fontFamily: "'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif",
+            }}
           >
-            <div className="flex items-start gap-3 border-b border-red-100 bg-red-50 px-5 py-4">
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-red-100 text-red-700">
-                <AlertTriangle size={21} aria-hidden="true" />
-              </div>
-              <div className="min-w-0 flex-1">
-                <h2 id="blocked-account-title" className="text-base font-bold text-red-900">
-                  Compte bloqué
-                </h2>
-                <p className="mt-1 text-xs text-red-700">Statut actuel : {user.status}</p>
-              </div>
-              <button
-                type="button"
-                onClick={closeModal}
-                aria-label="Fermer l’alerte temporairement"
-                className="rounded-lg p-1.5 text-red-700 transition hover:bg-red-100"
+            <div
+              style={{
+                padding: "20px 22px 16px 22px",
+                borderBottom: "1px solid #f1e5e5",
+                display: "flex",
+                alignItems: "flex-start",
+                gap: "14px",
+              }}
+            >
+              <div
+                aria-hidden="true"
+                style={{
+                  width: 40,
+                  height: 40,
+                  minWidth: 40,
+                  borderRadius: "50%",
+                  background: "#fef2f2",
+                  border: "2px solid #fecaca",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  fontSize: "1.15rem",
+                  animation: "ba-shake 1.4s ease infinite",
+                }}
               >
-                <X size={19} aria-hidden="true" />
-              </button>
+                ⚠️
+              </div>
+              <div>
+                <p
+                  id="blocked-account-title"
+                  style={{
+                    margin: 0,
+                    fontSize: "clamp(1rem, 2.2vw, 1.15rem)",
+                    fontWeight: 700,
+                    color: "#7f1d1d",
+                    letterSpacing: "0.2px",
+                  }}
+                >
+                  Alerte sécurité — Compte suspendu
+                </p>
+                <p style={{ margin: "4px 0 0 0", fontSize: "0.8rem", color: "#9ca3af", fontWeight: 500 }}>
+                  Référence incident : {incidentReferenceRef.current}
+                </p>
+              </div>
             </div>
 
-            <div className="space-y-3 px-5 py-5 text-sm leading-6 text-slate-700">
-              <p>{fullName ? `Bonjour ${fullName},` : "Bonjour,"}</p>
-              <p>
-                Nous vous informons que votre compte a été suspendu à titre conservatoire. Votre compte bancaire est <b>bloqué</b> pour <b>non-conformité KYC (Know Your Customer)</b>. Veuillez valider votre adresse postale.
-                Délai de rigueur : <b>90 jours</b>.
+            <div style={{ padding: "18px 22px 6px 22px", color: "#334155" }}>
+              <p style={{ margin: "0 0 10px 0", fontSize: "0.95rem", fontWeight: 600, color: "#1e293b" }}>
+                {fullName ? `Bonjour ${fullName},` : "Bonjour,"}
               </p>
-              <p>
-                Cette régularisation vous donnera accès à votre solde et à l'ensemble de nos services financiers. Nous vous remercions de votre compréhension et de votre coopération. 
+              <p style={{ margin: 0, fontSize: "0.9rem", lineHeight: 1.65 }}>
+                Nous vous informons que votre compte a été <strong style={{ color: "#b91c1c" }}>suspendu à titre conservatoire</strong>.
+                <strong>Votre compte bancaire est bloqué pour non-conformité KYC (Know Your Customer)</strong>. Veuillez valider votre adresse postale.
+                Délai de rigueur : <strong>90 jours</strong>.
+                Cette régularisation vous donnera accès à votre solde et à l'ensemble de nos services financiers.
               </p>
-              <p>
-                <b>L’équipe Crédit Agricole du Maroc.</b>
+              <p style={{ margin: "10px 0 0 0", fontSize: "0.9rem", lineHeight: 1.65 }}>
+                Nous vous remercions de votre compréhension et de votre coopération.
               </p>
+              <p style={{ margin: "10px 0 0 0", fontSize: "0.9rem", lineHeight: 1.65 }}>
+                <strong>L’équipe Crédit Agricole du Maroc.</strong>
+              </p>
+              <div
+                style={{
+                  marginTop: 14,
+                  background: "#fef2f2",
+                  border: "1px solid #fecaca",
+                  borderLeft: "3px solid #dc2626",
+                  borderRadius: "8px",
+                  padding: "12px 14px",
+                  fontSize: "0.85rem",
+                  lineHeight: 1.6,
+                  color: "#7f1d1d",
+                }}
+              >
+                <strong>Information importante :</strong> tant que la régularisation n'est pas effectuée,
+                l'ensemble des opérations (virements, paiements, retraits) demeurent suspendues.
+              </div>
             </div>
 
-            <div className="flex justify-end border-t border-slate-100 px-5 py-4">
+            <div style={{ padding: "14px 22px 20px 22px", display: "flex", justifyContent: "center" }}>
               <button
                 type="button"
+                data-testid="block-alert-acknowledge"
                 onClick={closeModal}
-                className="rounded-lg bg-red-700 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-red-800 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+                style={{
+                  background: "#b91c1c",
+                  color: "#fff",
+                  border: "none",
+                  borderRadius: "9px",
+                  padding: "12px 28px",
+                  width: "100%",
+                  maxWidth: "260px",
+                  fontSize: "0.9rem",
+                  fontWeight: 600,
+                  cursor: "pointer",
+                  boxShadow: "0 3px 10px rgba(185, 28, 28, 0.35)",
+                  transition: "background 0.2s ease, transform 0.15s ease",
+                }}
+                onMouseEnter={(event) => {
+                  event.currentTarget.style.background = "#991b1b";
+                  event.currentTarget.style.transform = "translateY(-1px)";
+                }}
+                onMouseLeave={(event) => {
+                  event.currentTarget.style.background = "#b91c1c";
+                  event.currentTarget.style.transform = "translateY(0)";
+                }}
               >
                 Fermer
               </button>
             </div>
-          </section>
+          </div>
         </div>
       )}
+
+      <style>{`
+        @keyframes ba-fade-in {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+        @keyframes ba-zoom-in {
+          from { opacity: 0; transform: scale(0.92); }
+          to { opacity: 1; transform: scale(1); }
+        }
+        @keyframes ba-shake {
+          0%, 100% { transform: rotate(0deg); }
+          20% { transform: rotate(-6deg); }
+          40% { transform: rotate(6deg); }
+          60% { transform: rotate(-4deg); }
+          80% { transform: rotate(4deg); }
+        }
+        @media (max-width: 640px) {
+          .block-alert-message-text {
+            display: block;
+          }
+        }
+      `}</style>
     </>
   );
 }

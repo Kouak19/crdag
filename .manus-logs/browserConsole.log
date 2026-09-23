@@ -92,3 +92,11 @@
 [2026-08-09T22:45:42.457Z] {"timestamp":1786315540430,"level":"DEBUG","args":["[Manus] Debug collector initialized (no rrweb, UI events only)"],"stack":null}
 [2026-08-09T22:45:42.457Z] {"timestamp":1786315540453,"level":"DEBUG","args":["[vite] connected."],"stack":null}
 [2026-08-09T22:45:42.457Z] {"timestamp":1786315541014,"level":"INFO","args":["%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools","font-weight:bold"],"stack":null}
+[2026-09-23T18:10:04.503Z] {"timestamp":1790187001120,"level":"DEBUG","args":["[Manus] Debug collector initialized (no rrweb, UI events only)"],"stack":null}
+[2026-09-23T18:10:04.503Z] {"timestamp":1790187001133,"level":"DEBUG","args":["[vite] connected."],"stack":null}
+[2026-09-23T18:10:08.588Z] {"timestamp":1790187007784,"level":"INFO","args":["%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools","font-weight:bold"],"stack":null}
+[2026-09-23T18:10:08.588Z] {"timestamp":1790187007813,"level":"WARN","args":["Supabase non configuré : VITE_SUPABASE_URL et VITE_SUPABASE_ANON_KEY sont requis."],"stack":null}
+[2026-09-23T18:15:17.122Z] {"timestamp":1790187316471,"level":"DEBUG","args":["[vite]","hot updated: /src/index.css"],"stack":null}
+[2026-09-23T18:15:17.122Z] {"timestamp":1790187316479,"level":"DEBUG","args":["[vite]","hot updated: /src/components/BlockAlert.tsx"],"stack":null}
+[2026-09-23T18:16:46.453Z] {"timestamp":1790187404937,"level":"DEBUG","args":["[vite]","hot updated: /src/index.css"],"stack":null}
+[2026-09-23T18:16:46.453Z] {"timestamp":1790187404939,"level":"DEBUG","args":["[vite]","hot updated: /src/components/BlockAlert.tsx"],"stack":null}
