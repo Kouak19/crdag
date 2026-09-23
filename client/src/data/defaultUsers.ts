@@ -8317,7 +8317,7 @@ export const DEFAULT_USERS: DefaultUser[] = [
   {
     "id": "user_096",
     "identifiant": "1000000096",
-    "codepersonnel": "101330",
+    "codepersonnel": "101340",
     "nom": "Roux",
     "prenom": "Alexandre",
     "location": "Maroc",
@@ -8335,7 +8335,7 @@ export const DEFAULT_USERS: DefaultUser[] = [
         "id": "cc",
         "type": "Compte Courant",
         "number": "N°******2296",
-        "balance": 880000,
+        "balance": 880800,
         "icon": "wallet"
       },
       {
