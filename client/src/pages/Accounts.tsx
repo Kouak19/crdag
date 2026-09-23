@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { CreditCard, Eye, EyeOff, Plus, MoreHorizontal, Wifi } from "lucide-react";
 import { useState } from "react";
 import { getAuthenticatedUser } from "../data/defaultUsers";
+import AccountStatusBadge from "../components/AccountStatusBadge";
 
 type ChipVariant = "gold" | "red";
 type CardBrandName = "VISA" | "mastercard";
@@ -223,6 +224,13 @@ export default function Accounts() {
               {showBalances ? "Masquer" : "Afficher"}
             </button>
           </div>
+
+          {currentUser && (
+            <div className="mb-4 flex items-center justify-between rounded-xl border border-gray-100 bg-white px-4 py-3 shadow-sm">
+              <span className="text-sm font-medium text-gray-600">Statut global du compte</span>
+              <AccountStatusBadge status={currentUser.status} />
+            </div>
+          )}
 
           <div className="space-y-3">
             {displayedAccounts.map((account, i) => (

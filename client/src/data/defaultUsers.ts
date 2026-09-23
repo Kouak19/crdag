@@ -8737,6 +8737,8 @@ export const getAuthenticatedUser = (): DefaultUser | null => {
 
     return {
       ...defaultUser,
+      // Le statut chargé depuis Supabase reste prioritaire pour la session.
+      status: sessionUser.status ?? defaultUser.status,
       // Les changements opérationnels restent propres à la session courante.
       accounts: Array.isArray(sessionUser.accounts) ? sessionUser.accounts : defaultUser.accounts,
       transactions: Array.isArray(sessionUser.transactions) ? sessionUser.transactions : defaultUser.transactions,

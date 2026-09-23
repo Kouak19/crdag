@@ -31,6 +31,7 @@ import {
 import { useState } from "react";
 import { useLocation } from "wouter";
 import { AUTH_SESSION_KEY, AUTH_USER_KEY, getAuthenticatedUser } from "../data/defaultUsers";
+import AccountStatusBadge from "../components/AccountStatusBadge";
 
 const settingsSections = [
   {
@@ -190,9 +191,9 @@ export default function Settings() {
               <div className="min-w-0 flex-1">
                 <p className="text-xs font-medium uppercase tracking-[0.14em] text-white/65">Profil du compte</p>
                 <p className="mt-1 truncate text-xl font-semibold">{displayName}</p>
-                <p className="mt-1 flex items-center gap-1.5 text-xs text-white/75">
-                  <BadgeCheck size={14} /> Compte {currentUser?.status ?? "Actif"}
-                </p>
+                <div className="mt-2">
+                  <AccountStatusBadge status={currentUser?.status} />
+                </div>
               </div>
             </div>
             <div className="relative mt-5 grid grid-cols-2 gap-3 border-t border-white/15 pt-4">
@@ -240,7 +241,13 @@ export default function Settings() {
                 <DetailRow icon={Mail} label="Email personnel" value={currentUser?.email ?? "Non renseigné"} muted={!currentUser?.email} />
                 <DetailRow icon={Phone} label="Téléphone personnel" value={currentUser?.phone ?? "Non renseigné"} muted={!currentUser?.phone} />
                 <DetailRow icon={MapPin} label="Adresse postale" value={currentUser?.address ?? "Non renseignée"} muted={!currentUser?.address} />
-                <DetailRow icon={BadgeCheck} label="Statut du compte" value={currentUser?.status ?? "Non renseigné"} />
+                <div className="flex items-center justify-between gap-4 border-b border-gray-100 py-3">
+                  <div className="flex items-center gap-3 text-sm text-gray-500">
+                    <BadgeCheck size={16} />
+                    <span>Statut du compte</span>
+                  </div>
+                  <AccountStatusBadge status={currentUser?.status} />
+                </div>
                 <DetailRow icon={Clock3} label="Dernière connexion" value={lastConnection} muted={lastConnection === "Non renseignée"} />
               </div>
             </SectionCard>

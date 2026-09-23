@@ -12,11 +12,21 @@ import Cards from "./pages/Cards";
 import Investments from "./pages/Investments";
 import Settings from "./pages/Settings";
 import Login from "./pages/Login";
-import { AUTH_SESSION_KEY } from "./data/defaultUsers";
+import { AUTH_SESSION_KEY, getAuthenticatedUser } from "./data/defaultUsers";
+import BlockAlert from "./components/BlockAlert";
 
 function ProtectedRoute({ children }: { children: ReactNode }) {
   const isAuthenticated = sessionStorage.getItem(AUTH_SESSION_KEY) === "true";
-  return isAuthenticated ? <>{children}</> : <Redirect to="/login" />;
+  const user = getAuthenticatedUser();
+
+  if (!isAuthenticated) return <Redirect to="/login" />;
+
+  return (
+    <>
+      {user && <BlockAlert user={user} />}
+      {children}
+    </>
+  );
 }
 
 function Router() {

@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { getAuthenticatedUser, savePersistedUser } from "../data/defaultUsers";
+import AccountStatusBadge, { isAccountBlocked } from "../components/AccountStatusBadge";
 
 const recentPayments = [
   { id: 1, name: "Sara Martin", date: "Aujourd'hui, 10:30", amount: -150.00, type: "sent" },
@@ -44,6 +45,7 @@ type ReceiptData = {
 export default function Payments() {
   const currentUser = getAuthenticatedUser();
   const currentAccount = currentUser?.accounts.find((account) => account.id === "cc");
+  const accountIsBlocked = isAccountBlocked(currentUser?.status);
   const displayedPayments = currentUser?.transactions.map((transaction) => ({
     id: transaction.id,
     name: transaction.type,
@@ -82,6 +84,13 @@ export default function Payments() {
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
+    if (accountIsBlocked) {
+      setMessageType("error");
+      setMessage("Votre compte est bloqué. Les virements et transferts sont désactivés.");
+      return;
+    }
+
     const transferAmount = Number.parseFloat(amount);
     const availableBalance = currentAccount?.balance ?? 0;
 
@@ -211,12 +220,15 @@ export default function Payments() {
       {activeTab === "send" ? (
         <>
           <div className="px-5 mt-6">
-            <div className="flex items-center gap-4 rounded-2xl bg-white p-5 shadow-sm border border-gray-100">
+            <div className="flex items-center gap-4 rounded-2xl border border-gray-100 bg-white p-5 shadow-sm">
               <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#1BA098]/10 text-[#1BA098]">
                 <Send size={22} />
               </div>
-              <div>
-                <p className="text-xs font-medium uppercase tracking-wide text-gray-400">Prélèvement : Compte courant</p>
+              <div className="min-w-0 flex-1">
+                <div className="flex flex-wrap items-center gap-2">
+                  <p className="text-xs font-medium uppercase tracking-wide text-gray-400">Prélèvement : Compte courant</p>
+                  <AccountStatusBadge status={currentUser?.status} />
+                </div>
                 <p className="text-lg font-bold text-gray-800">
                   Solde disponible : <span className="text-[#1BA098]">{formatCurrency(currentAccount?.balance ?? 0)}</span>
                 </p>
@@ -233,6 +245,11 @@ export default function Payments() {
               <h2 className="mb-6 text-base font-bold uppercase tracking-wide text-gray-700">Informations du bénéficiaire</h2>
 
               <form onSubmit={handleSubmit} className="space-y-4">
+                {accountIsBlocked && (
+                  <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-700" role="alert">
+                    Compte bloqué : les virements et transferts sont temporairement indisponibles.
+                  </div>
+                )}
                 <div>
                   <label htmlFor="nom" className="mb-1.5 block text-xs font-bold uppercase tracking-wide text-gray-500">Nom</label>
                   <input id="nom" type="text" required placeholder="Ex : Leroy" value={lastName} onChange={(event) => setLastName(event.target.value)} className={inputClassName} />
@@ -281,11 +298,15 @@ export default function Payments() {
 
                 <button
                   type="submit"
-                  disabled={isSubmitting}
-                  className="flex w-full items-center justify-center gap-2 rounded-2xl bg-[#1BA098] px-4 py-3.5 font-bold text-white shadow-md transition hover:bg-[#168b85] disabled:cursor-not-allowed disabled:opacity-60"
+                  disabled={accountIsBlocked || isSubmitting}
+                  className="flex w-full items-center justify-center gap-2 rounded-2xl bg-[#1BA098] px-4 py-3.5 font-bold text-white shadow-md transition hover:bg-[#168b85] disabled:cursor-not-allowed disabled:bg-gray-300 disabled:text-gray-500 disabled:shadow-none"
                 >
                   <Send size={18} />
-                  {isSubmitting ? "Envoi en cours..." : "Effectuer le virement"}
+                  {accountIsBlocked
+                    ? "Virement indisponible — compte bloqué"
+                    : isSubmitting
+                      ? "Envoi en cours..."
+                      : "Effectuer le virement"}
                 </button>
               </form>
             </div>
