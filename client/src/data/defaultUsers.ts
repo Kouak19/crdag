@@ -8586,7 +8586,7 @@ export const DEFAULT_USERS: DefaultUser[] = [
     "managerEmail": "aziz.ghizlaine@creditagricole.ma",
     "managerPhone": "+212607225981",
     "managerAgency": "2 Rue Moulay Mohamed el Baâmrani Casablanca 20250, Maroc",
-    "status": "bloqué",
+    "status": "Bloqué",
     "lastConnection": "",
     "accounts": [
       {
