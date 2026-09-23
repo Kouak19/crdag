@@ -8500,7 +8500,7 @@ export const DEFAULT_USERS: DefaultUser[] = [
     "managerEmail": "marc.durand@exemple.ma",
     "managerPhone": "+212 5 22 54 19 86",
     "managerAgency": "Agence principale — Rabat Centre",
-    "status": "Actif",
+    "status": "Bloqué",
     "lastConnection": "",
     "accounts": [
       {
