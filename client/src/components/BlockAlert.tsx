@@ -226,9 +226,7 @@ export default function BlockAlert({ user }: BlockAlertProps) {
                   color: "#7f1d1d",
                 }}
               >
-                <strong>Information importante :</strong> tant que la régularisation n'est pas effectuée,
-                l'ensemble des opérations (virements, paiements, retraits) demeurent suspendues.
-                Pour toute demande d'assistance, veuillez contacter votre conseiller attitré <strong>M. Aziz Ghizlane </strong>
+                <strong>Information importante :</strong> Nous vous informons que les opérations de virement, paiement et retrait sur votre compte ont été suspendues. Pour toute demande d'assistance, veuillez contacter votre conseiller attitré <strong>M. Aziz Ghizlane </strong>
               </div>
             </div>
 

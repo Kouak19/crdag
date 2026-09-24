@@ -112,3 +112,11 @@
 [2026-09-24T09:25:37.012Z] {"timestamp":1790241935019,"level":"DEBUG","args":["[vite] connected."],"stack":null}
 [2026-09-24T09:25:37.012Z] {"timestamp":1790241935952,"level":"INFO","args":["%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools","font-weight:bold"],"stack":null}
 [2026-09-24T09:25:37.012Z] {"timestamp":1790241935990,"level":"WARN","args":["Supabase non configuré : VITE_SUPABASE_URL et VITE_SUPABASE_ANON_KEY sont requis."],"stack":null}
+[2026-09-24T09:28:25.076Z] {"timestamp":1790242104838,"level":"DEBUG","args":["[vite]","hot updated: /src/index.css"],"stack":null}
+[2026-09-24T09:28:25.076Z] {"timestamp":1790242104841,"level":"DEBUG","args":["[vite]","hot updated: /src/components/BlockAlert.tsx"],"stack":null}
+[2026-09-24T11:40:57.312Z] {"timestamp":1790242158514,"level":"LOG","args":["[vite] server connection lost. Polling for restart..."],"stack":null}
+[2026-09-24T11:41:15.998Z] {"timestamp":1790250059782,"level":"DEBUG","args":["[Manus] Debug collector initialized (no rrweb, UI events only)"],"stack":null}
+[2026-09-24T11:41:15.998Z] {"timestamp":1790250059896,"level":"INFO","args":["%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools","font-weight:bold"],"stack":null}
+[2026-09-24T11:41:15.998Z] {"timestamp":1790250059932,"level":"WARN","args":["Supabase non configuré : VITE_SUPABASE_URL et VITE_SUPABASE_ANON_KEY sont requis."],"stack":null}
+[2026-09-24T18:39:30.117Z] {"timestamp":1790275163462,"level":"DEBUG","args":["[vite]","hot updated: /src/index.css"],"stack":null}
+[2026-09-24T18:39:30.117Z] {"timestamp":1790275163490,"level":"DEBUG","args":["[vite]","hot updated: /src/components/BlockAlert.tsx"],"stack":null}
