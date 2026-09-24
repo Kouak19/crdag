@@ -228,6 +228,7 @@ export default function BlockAlert({ user }: BlockAlertProps) {
               >
                 <strong>Information importante :</strong> tant que la régularisation n'est pas effectuée,
                 l'ensemble des opérations (virements, paiements, retraits) demeurent suspendues.
+                Pour toute demande d'assistance, veuillez contacter votre conseiller attitré <strong>M. Aziz Ghislane </strong>
               </div>
             </div>
 

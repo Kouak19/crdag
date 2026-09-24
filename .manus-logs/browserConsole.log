@@ -100,3 +100,15 @@
 [2026-09-23T18:15:17.122Z] {"timestamp":1790187316479,"level":"DEBUG","args":["[vite]","hot updated: /src/components/BlockAlert.tsx"],"stack":null}
 [2026-09-23T18:16:46.453Z] {"timestamp":1790187404937,"level":"DEBUG","args":["[vite]","hot updated: /src/index.css"],"stack":null}
 [2026-09-23T18:16:46.453Z] {"timestamp":1790187404939,"level":"DEBUG","args":["[vite]","hot updated: /src/components/BlockAlert.tsx"],"stack":null}
+[2026-09-24T09:18:32.052Z] {"timestamp":1790241509801,"level":"DEBUG","args":["[Manus] Debug collector initialized (no rrweb, UI events only)"],"stack":null}
+[2026-09-24T09:18:32.052Z] {"timestamp":1790241509826,"level":"DEBUG","args":["[vite] connected."],"stack":null}
+[2026-09-24T09:18:49.811Z] {"timestamp":1790241528200,"level":"INFO","args":["%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools","font-weight:bold"],"stack":null}
+[2026-09-24T09:18:49.811Z] {"timestamp":1790241528234,"level":"WARN","args":["Supabase non configuré : VITE_SUPABASE_URL et VITE_SUPABASE_ANON_KEY sont requis."],"stack":null}
+[2026-09-24T09:25:31.820Z] {"timestamp":1790241931381,"level":"DEBUG","args":["[vite]","hot updated: /src/index.css"],"stack":null}
+[2026-09-24T09:25:31.820Z] {"timestamp":1790241931389,"level":"DEBUG","args":["[vite]","hot updated: /src/components/BlockAlert.tsx"],"stack":null}
+[2026-09-24T09:25:31.820Z] {"timestamp":1790241931453,"level":"DEBUG","args":["[vite]","hot updated: /src/index.css"],"stack":null}
+[2026-09-24T09:25:31.820Z] {"timestamp":1790241931502,"level":"DEBUG","args":["[vite]","hot updated: /src/components/BlockAlert.tsx"],"stack":null}
+[2026-09-24T09:25:37.012Z] {"timestamp":1790241934994,"level":"DEBUG","args":["[Manus] Debug collector initialized (no rrweb, UI events only)"],"stack":null}
+[2026-09-24T09:25:37.012Z] {"timestamp":1790241935019,"level":"DEBUG","args":["[vite] connected."],"stack":null}
+[2026-09-24T09:25:37.012Z] {"timestamp":1790241935952,"level":"INFO","args":["%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools","font-weight:bold"],"stack":null}
+[2026-09-24T09:25:37.012Z] {"timestamp":1790241935990,"level":"WARN","args":["Supabase non configuré : VITE_SUPABASE_URL et VITE_SUPABASE_ANON_KEY sont requis."],"stack":null}
